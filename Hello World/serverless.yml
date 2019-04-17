@@ -1,0 +1,24 @@
+service: auth-api
+
+provider:
+  name: aws
+  runtime: dotnetcore2.1
+
+  stage: dev
+  region: eu-west-1
+
+package:
+  artifact: bin/release/netcoreapp2.1/deploy-package.zip
+
+functions:
+  AuthHandler:
+    handler: HelloWorld::Hello_World.Program::FunctionHandlerAsync
+    timeout: 30
+    events:
+      - http:
+          method: ANY
+          path: /hello/{proxy+}
+          cors: true
+
+plugins:
+  - serverless-pseudo-parameters
